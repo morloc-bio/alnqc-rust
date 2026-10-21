@@ -1,0 +1,5 @@
+--' The alnqc test suite against alnqc-rust
+module test-alnqc-rust (test)
+
+import alnqc.test (test)
+import alnqc-rust

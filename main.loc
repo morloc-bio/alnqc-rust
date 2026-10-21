@@ -1,0 +1,30 @@
+--' Rust implementation of the alnqc module
+module alnqc-rust (*)
+
+import alnqc
+import bio-rust
+
+record Rust => AlnQcRefs = "AqRefs"
+record Rust => TxPoints = "AqTxPoints"
+record Rust => AlnQc = "AqAlnQc"
+
+source Rust from "alnqc.rs"
+  ( "aq_refs" as alnQcRefs
+  , "aq_aln_qc_pairs" as alnQcPairsWith
+  , "aq_aln_qc_reads" as alnQcReadsWith
+  , "aq_merge" as mergeAlnQc
+  , "aq_gene_body_coverage" as geneBodyCoverage
+  , "aq_tin_values" as tinValues
+  , "aq_gene_body_coverage_text" as geneBodyCoverageText
+  , "aq_tin_summary_text" as tinSummaryText
+  , "aq_biotype_counts_text" as biotypeCountsText
+  , "aq_rrna_percent_text" as rrnaPercentText
+  , "aq_read_origin_text" as readOriginText
+  )
+
+-- Each takes `bioRustAnchor 0` so that bio-rust's types are compiled in.
+alnQcPairsWith :: Int -> AlnQcRefs -> [ReadPair] -> [FragHits] -> AlnQc
+alnQcReadsWith :: Int -> AlnQcRefs -> [FastqEntry] -> [FragHits] -> AlnQc
+
+alnQcPairs r xs hs = alnQcPairsWith (bioRustAnchor 0) r xs hs
+alnQcReads r xs hs = alnQcReadsWith (bioRustAnchor 0) r xs hs
